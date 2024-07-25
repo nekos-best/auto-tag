@@ -8,6 +8,7 @@ Improved by using ChatGPT.
 - Python 3.7-venv
 
 ## Instructions
+1. **Download the model from [Google Drive](https://drive.google.com/file/d/1Ekgsn2To_BNSxXN1-UZiqZxChm5yoZ0p) and put it in the `model` folder.**
 1. **`python3.7 -m venv ./env`**
 1. **`source env/bin/activate`**
 1. **`python3.7 setup.py install`**

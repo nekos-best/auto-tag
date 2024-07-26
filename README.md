@@ -4,7 +4,6 @@ Model provided by [KichangKim](https://github.com/KichangKim) in [DeepDanbooru](
 
 ## Requrements
 - Python 3.10
-- Python 3.10-venv
 
 ## Instructions
 1. **Download the model from [Google Drive](https://drive.google.com/file/d/1qffwjF-BHV6MkPVliLO1jZwMQatri06v) and put it in the `model` folder.**

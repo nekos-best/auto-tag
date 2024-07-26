@@ -1,43 +1,50 @@
 import sys
 import os
-import tags
-import model
+import time
+from tags import add_tags_to_memory, save_all_tags_to_json
+from model import DeepDanbooruModel
 
 class AddAnimeTags:
     def __init__(self):
-        self.model = model.DeepDanbooruModel()
-        self.image_directory = None  # Store the image directory for later use
+        self.model = DeepDanbooruModel()
+        self.image_directory = None
 
-    def navigate_dir(self, path):
+    def navigate_directory(self, path: str):
+        start_time = time.time()
+
         if os.path.isdir(path):
-            self.image_directory = path  # Set the image directory
+            self.image_directory = path
             for root, _, files in os.walk(path):
                 for filename in files:
                     file_path = os.path.join(root, filename)
-                    self.add_tags_to_image(file_path)
-            # Save all image names and tags to JSON after processing all files
-            if self.image_directory:
-                json_file_path = os.path.join(self.image_directory, 'tags.json')
-                tag.save_all_tags_to_json(json_file_path)
+                    self.classify_and_add_tags(file_path)
+            self.save_tags()
         else:
-            self.add_tags_to_image(path)
-            self.image_directory = os.path.dirname(path)  # Set the directory of the single image
-            # Save the single image name and tags to JSON
-            json_file_path = os.path.join(self.image_directory, 'tags.json')
-            tag.save_all_tags_to_json(json_file_path)
+            self.classify_and_add_tags(path)
+            self.image_directory = os.path.dirname(path)
+            self.save_tags()
 
-    def add_tags_to_image(self, path):
-        if sys.platform == 'win32':
-            if not path.lower().endswith(('.jpg', '.jpeg')):
-                print(f"{path} is not a JPEG, no EXIF data")
-                return
+        total_time = time.time() - start_time
+        print(f"Total operation time: {total_time:.2f} seconds")
+
+    def classify_and_add_tags(self, path: str):
+        image_start_time = time.time()
 
         status, tags = self.model.classify_image(path)
         if status == 'success':
-            tag.add_tags_to_memory(path, tags)
-            print(f"{len(tags)} tags added.")
+            add_tags_to_memory(path, tags)
+            image_time = time.time() - image_start_time
+            num_tags = len(tags)
+            print(f"[Success] [{image_time:.2f} seconds] [{num_tags} tags added] [{path}]")
         else:
-            print(f"Failed to process {path}")
+            image_time = time.time() - image_start_time
+            print(f"[Failed] [{image_time:.2f} seconds] [No tags] [{path}]")
+
+    def save_tags(self):
+        if self.image_directory:
+            json_file_path = os.path.join(self.image_directory, 'tags.json')
+            save_all_tags_to_json(json_file_path)
+            print(f"Tags saved to {json_file_path}")
 
 def parse_args():
     if len(sys.argv) < 2:
@@ -51,4 +58,4 @@ def parse_args():
 if __name__ == "__main__":
     parse_args()
     add_anime_tags = AddAnimeTags()
-    add_anime_tags.navigate_dir(sys.argv[1])
+    add_anime_tags.navigate_directory(sys.argv[1])

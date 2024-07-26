@@ -1,0 +1,5 @@
+numpy==1.24.4
+tensorflow
+iptcinfo3
+pillow
+xattr

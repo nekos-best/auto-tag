@@ -1,21 +1,18 @@
 # Auto Tag for Images
 Original code from [auto-tag-anime](https://github.com/Epsp0/auto-tag-anime) by [Epsp0](https://github.com/Epsp0)\
 Model provided by [KichangKim](https://github.com/KichangKim) in [DeepDanbooru](https://github.com/KichangKim/DeepDanbooru)\
-Improved by using ChatGPT.
 
 ## Requrements
-- Python 3.7
-- Python 3.7-venv
+- Python 3.10
+- Python 3.10-venv
 
 ## Instructions
-1. **Download the model from [Google Drive](https://drive.google.com/file/d/1Ekgsn2To_BNSxXN1-UZiqZxChm5yoZ0p) and put it in the `model` folder.**
-1. **`python3.7 -m venv ./env`**
-1. **`source env/bin/activate`**
-1. **`python3.7 setup.py install`**
+1. **Download the model from [Google Drive](https://drive.google.com/file/d/1qffwjF-BHV6MkPVliLO1jZwMQatri06v) and put it in the `model` folder.**
+1. **`pip install -r requirements.txt`**
 
 ## Usage
-### To get tags for a single image
-`python3.7 auto-tag.py "example.png"`
+### Get tags for a single image
+`python3 auto-tag.py "example.png"`
 
-### Using a directory
-`python3.7 auto-tag.py "/path/to/directory/"`
+### Get tags for the whole directory
+`python3 auto-tag.py "/path/to/directory/"`

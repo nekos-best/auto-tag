@@ -1,6 +1,6 @@
 # Auto Tag for Images
 Original code from [auto-tag-anime](https://github.com/Epsp0/auto-tag-anime) by [Epsp0](https://github.com/Epsp0)\
-Model provided by [KichangKim](https://github.com/KichangKim) in [DeepDanbooru](https://github.com/KichangKim/DeepDanbooru)\
+Model provided by [KichangKim](https://github.com/KichangKim) in [DeepDanbooru](https://github.com/KichangKim/DeepDanbooru)
 
 ## Requrements
 - Python 3.10

@@ -7,18 +7,19 @@ import tensorflow as tf
 
 class DeepDanbooruModel:
     THRESHOLD = 0.75 # Increase this to achieve more accurate results or decrease it for less accurate results.
+    METADATA_PATH = "./tags/metadata.txt" # Modify the tags you prefer to display exclusively.
+    CHARACTERS_PATH = "./tags/characters.txt" # Modify the characters you prefer to display exclusively.
 
-    # Do not change the paths
+    # Do not change the paths or settings below here.
     MODEL_PATH = "./model/model-resnet_custom_v3.h5"
-    CHARACTERS_PATH = "./tags/characters.txt"
-    METADATA_PATH = "./tags/metadata.txt"
-    TAGS_PATH = "./tags/tags.txt"
+    TAGS_PATH = "./model/tags.txt"
     IMAGE_SIZE = (512, 512)
 
     def __init__(self):
         self.model = self.load_model()
         self.tags = self.load_tags()
         self.characters = self.load_characters()
+        self.metadata_tags = self.load_metadata_tags()
 
     def load_model(self) -> tf.keras.Model:
         print('Loading model...')
@@ -41,7 +42,7 @@ class DeepDanbooruModel:
         try:
             with open(self.TAGS_PATH, 'r') as tags_stream:
                 tags = np.array([tag.strip() for tag in tags_stream if tag.strip()])
-            print(f'Tags loaded successfully. Number of tags: {len(tags)}')
+            print(f'Tags loaded successfully.')
         except Exception as e:
             print(f'Failed to load tags. Error: {e}')
             sys.exit()
@@ -62,6 +63,20 @@ class DeepDanbooruModel:
 
         return characters
 
+    def load_metadata_tags(self) -> set:
+        if not os.path.exists(self.METADATA_PATH):
+            self.model_not_found_error(self.METADATA_PATH)
+
+        try:
+            with open(self.METADATA_PATH, 'r') as metadata_stream:
+                metadata_tags = {tag.strip() for tag in metadata_stream if tag.strip()}
+            print(f'Metadata tags loaded successfully. Number of metadata tags: {len(metadata_tags)}')
+        except Exception as e:
+            print(f'Failed to load metadata tags. Error: {e}')
+            sys.exit()
+
+        return metadata_tags
+
     @staticmethod
     def model_not_found_error(path: str):
         print(f'File not found at {path}')
@@ -74,11 +89,15 @@ class DeepDanbooruModel:
         except IOError:
             return 'fail', [], []
 
-        results = self.model.predict(np.array([image])).reshape(self.tags.shape[0])
-        result_tags = self.get_result_tags(results)
+        results = self.model.predict(np.array([image]))
 
-        # Separate tags and characters
-        tags = [tag for tag in result_tags.keys() if tag not in self.characters]
+        if results.shape[1] != self.tags.shape[0]:
+            print("Mismatch between model output and number of tags!")
+            return 'fail', [], []
+
+        result_tags = self.get_result_tags(results.reshape(-1))
+
+        tags = [tag for tag in result_tags.keys() if tag in self.metadata_tags]
         characters = [tag for tag in result_tags.keys() if tag in self.characters]
 
         return 'success', tags, characters

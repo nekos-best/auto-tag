@@ -1,4 +1,4 @@
-numpy==1.24.4
+numpy
 tensorflow
 iptcinfo3
 pillow

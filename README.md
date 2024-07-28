@@ -1,5 +1,5 @@
 # Auto Tag for Images
-Original code from [auto-tag-anime](https://github.com/Epsp0/auto-tag-anime) by [Epsp0](https://github.com/Epsp0)\
+Original code by [Epsp0](https://github.com/Epsp0) in [auto-tag-anime](https://github.com/Epsp0/auto-tag-anime)\
 Model provided by [KichangKim](https://github.com/KichangKim) in [DeepDanbooru](https://github.com/KichangKim/DeepDanbooru)
 
 ## Requrements
